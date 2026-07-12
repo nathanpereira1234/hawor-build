@@ -8,7 +8,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     FORCE_CUDA=1 \
     MAX_JOBS=2 \
     PYOPENGL_PLATFORM=egl \
-    MPLBACKEND=Agg
+    MPLBACKEND=Agg \
+    YOLO_CONFIG_DIR=/tmp/Ultralytics
 
 RUN apt-get update && apt-get install -y \
     git wget build-essential ninja-build \
@@ -52,8 +53,10 @@ RUN pip install --no-cache-dir ./thirdparty/DROID-SLAM
 RUN pip install --no-cache-dir ./thirdparty/DROID-SLAM/thirdparty/lietorch
 RUN pip install --no-cache-dir git+https://github.com/facebookresearch/pytorch3d.git@stable
 
-# LAST: nothing may override this. gradio 4.44 needs HfFolder, removed in hub 1.x
-RUN pip install --no-cache-dir --force-reinstall "huggingface_hub==0.25.2"
+# LAST: nothing may override the hub pin. gradio 4.44 needs HfFolder (removed in hub 1.x).
+# `spaces` is imported by scripts/ even though we don't use ZeroGPU — install it as a no-op.
+RUN pip install --no-cache-dir spaces && \
+    pip install --no-cache-dir --force-reinstall "huggingface_hub==0.25.2"
 
 EXPOSE 7860
 CMD ["python", "app.py"]
