@@ -56,7 +56,8 @@ RUN pip install --no-cache-dir git+https://github.com/facebookresearch/pytorch3d
 # LAST: nothing may override the hub pin. gradio 4.44 needs HfFolder (removed in hub 1.x).
 # `spaces` is imported by scripts/ even though we don't use ZeroGPU — install it as a no-op.
 RUN pip install --no-cache-dir spaces && \
-    pip install --no-cache-dir --force-reinstall "huggingface_hub==0.25.2"
+    pip install --no-cache-dir --force-reinstall \
+      "huggingface_hub==0.25.2" "matplotlib==3.8.4"
 
 EXPOSE 7860
 CMD ["python", "app.py"]
