@@ -24,7 +24,7 @@ COPY pre-requirements.txt requirements.txt ./
 RUN sed -i '/^torch==/d; /^torchvision==/d' pre-requirements.txt \
  && sed -i '/^chumpy/d; /^torch-scatter/d' requirements.txt
 
-RUN pip install --no-cache-dir gradio==4.44.0 huggingface_hub
+RUN pip install --no-cache-dir gradio==4.44.0 "huggingface_hub==0.25.2"
 RUN pip install --no-cache-dir -r pre-requirements.txt
 
 RUN pip install --no-cache-dir torch-scatter==2.1.2 \
