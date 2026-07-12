@@ -20,11 +20,10 @@ WORKDIR /app
 
 COPY pre-requirements.txt requirements.txt ./
 
-# base image owns torch/torchvision; these are handled separately
 RUN sed -i '/^torch==/d; /^torchvision==/d' pre-requirements.txt \
  && sed -i '/^chumpy/d; /^torch-scatter/d' requirements.txt
 
-RUN pip install --no-cache-dir gradio==4.44.0 "huggingface_hub==0.25.2"
+RUN pip install --no-cache-dir gradio==4.44.0 huggingface_hub
 RUN pip install --no-cache-dir -r pre-requirements.txt
 
 RUN pip install --no-cache-dir torch-scatter==2.1.2 \
@@ -39,7 +38,6 @@ p=pathlib.Path(chumpy.__file__).parent; \
 COPY . .
 RUN chmod -R 777 /app
 
-# submodules didn't survive the git re-init — clone Eigen fresh
 RUN rm -rf ./thirdparty/DROID-SLAM/thirdparty/eigen && \
     git clone --depth 1 --branch 3.4.0 \
       https://gitlab.com/libeigen/eigen.git \
@@ -53,6 +51,9 @@ RUN rm -rf ./thirdparty/DROID-SLAM/thirdparty/lietorch/eigen && \
 RUN pip install --no-cache-dir ./thirdparty/DROID-SLAM
 RUN pip install --no-cache-dir ./thirdparty/DROID-SLAM/thirdparty/lietorch
 RUN pip install --no-cache-dir git+https://github.com/facebookresearch/pytorch3d.git@stable
+
+# LAST: nothing may override this. gradio 4.44 needs HfFolder, removed in hub 1.x
+RUN pip install --no-cache-dir --force-reinstall "huggingface_hub==0.25.2"
 
 EXPOSE 7860
 CMD ["python", "app.py"]
