@@ -57,7 +57,8 @@ RUN pip install --no-cache-dir git+https://github.com/facebookresearch/pytorch3d
 # `spaces` is imported by scripts/ even though we don't use ZeroGPU — install it as a no-op.
 RUN pip install --no-cache-dir spaces && \
     pip install --no-cache-dir --force-reinstall \
-      "huggingface_hub==0.25.2" "matplotlib==3.8.4"
+      "huggingface_hub==0.25.2" "matplotlib==3.8.4" \
+      "pydantic==2.7.4" "gradio_client==1.3.0"
 
 EXPOSE 7860
 CMD ["python", "app.py"]
