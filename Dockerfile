@@ -58,7 +58,8 @@ RUN pip install --no-cache-dir git+https://github.com/facebookresearch/pytorch3d
 RUN pip install --no-cache-dir spaces && \
     pip install --no-cache-dir --force-reinstall \
       "huggingface_hub==0.25.2" "matplotlib==3.8.4" \
-      "pydantic==2.7.4" "gradio_client==1.3.0"
+      "pydantic==2.7.4" "gradio_client==1.3.0" \
+      "jinja2==3.1.4" "starlette==0.38.6" "fastapi==0.115.0"
 
 EXPOSE 7860
 CMD ["python", "app.py"]
